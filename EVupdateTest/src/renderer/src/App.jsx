@@ -9,7 +9,7 @@ function App() {
       <img alt="logo" className="logo" src={electronLogo} />
       <div className="creator">Powered by electron-vite</div>
       <div className="text">
-        Goodbye <span className="react">World</span>
+        Goodbye to the <span className="react">World</span>
       </div>
       <p className="tip">
         Please try pressing <code>F12</code> to open the devTool
