@@ -6,7 +6,7 @@
   "author": "example.com",
   "homepage": "https://electron-vite.org",
   "build": {
-    "productName": "helloworld",
+    "productName": "MyApp",
     "publish": [
       {
         "provider": "github",
@@ -18,7 +18,7 @@
       "out/**/*"
     ],
     "nsis": { 
-      "artifactName": "${productName}-${version}.${ext}"
+      "artifactName": "${productName}.${ext}"
     }
   },
   "scripts": {

@@ -24,31 +24,39 @@ autoUpdater.on('update-downloaded', (info) => {
 });
 
 
-
-
-
 // ##########################  the main update code you want ###############
+let userAcknowledgedUpdate = false;
+
 autoUpdater.on('update-available', (info) => {
   console.log('[Updater] Update available:', info.version);
   dialog.showMessageBox({
     type: 'info',
     title: 'Update Available',
     message: 'A new update is available. Downloading now...'
-  });
+  }).then(()=>{
+    userAcknowledgedUpdate = true
+  })
 });
 
 autoUpdater.on('update-downloaded', (info) => {
   console.log('[Updater] Update downloaded:', info.version);
-  dialog.showMessageBox({
-    type: 'info',
-    title: 'Update Ready',
-    message: 'Install & restart now?',
-    buttons: ['Yes', 'Later']
-  }).then(result => {
-    if (result.response === 0) {
-      autoUpdater.quitAndInstall(); 
+  const waitForUserAck = () => {
+    if (userAcknowledgedUpdate){
+      dialog.showMessageBox({
+        type: 'info',
+        title: 'Update Ready',
+        message: 'Install & restart now?',
+        buttons: ['Yes', 'Later']
+      }).then(result => {
+        if (result.response === 0) {
+          autoUpdater.quitAndInstall(); 
+        }
+      });    
+    }else {
+      setTimeout(waitForUserAck, 10000)
     }
-  });
+  }
+  waitForUserAck();
 });
 
 
