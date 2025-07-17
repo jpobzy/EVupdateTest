@@ -16,8 +16,7 @@
     }
   ],
   "files": [
-    "dist/**",
-    "main/**"
+    "out/**/*"
   ],
   "directories": {
     "buildResources": "build"
