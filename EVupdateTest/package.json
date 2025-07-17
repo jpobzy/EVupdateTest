@@ -5,6 +5,24 @@
   "main": "./out/main/index.js",
   "author": "example.com",
   "homepage": "https://electron-vite.org",
+  "build": {
+  "appId": "com.example.app",
+  "productName": "MyApp",
+  "publish": [
+    {
+      "provider": "github",
+      "owner": "jpobzy",
+      "repo": "EVupdateTest"
+    }
+  ],
+  "files": [
+    "dist/**",
+    "main/**"
+  ],
+  "directories": {
+    "buildResources": "build"
+  }
+},
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint --cache .",
@@ -20,7 +38,7 @@
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^4.0.0",
-    "electron-updater": "^6.3.9"
+    "electron-updater": "^6.6.2"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config": "^2.0.0",
