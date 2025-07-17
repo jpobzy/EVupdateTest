@@ -1,27 +1,26 @@
 {
   "name": "evupdatetest",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "An Electron application with React",
   "main": "./out/main/index.js",
   "author": "example.com",
   "homepage": "https://electron-vite.org",
   "build": {
-  "appId": "com.example.app",
-  "productName": "MyApp",
-  "publish": [
-    {
-      "provider": "github",
-      "owner": "jpobzy",
-      "repo": "EVupdateTest"
+    "productName": "helloworld",
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "jpobzy",
+        "repo": "EVupdateTest"
+      }
+    ],
+    "files": [
+      "out/**/*"
+    ],
+    "nsis": { 
+      "artifactName": "${productName}-${version}.${ext}"
     }
-  ],
-  "files": [
-    "out/**/*"
-  ],
-  "directories": {
-    "buildResources": "build"
-  }
-},
+  },
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint --cache .",
@@ -37,6 +36,7 @@
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^4.0.0",
+    "electron-log": "^5.4.1",
     "electron-updater": "^6.6.2"
   },
   "devDependencies": {

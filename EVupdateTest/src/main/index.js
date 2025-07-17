@@ -1,8 +1,57 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { autoUpdater } from 'electron-updater';
+import { app, shell, BrowserWindow, ipcMain, dialog } from 'electron';
+
+import log from 'electron-log';
+
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = 'info';
+
+log.info('App starting...');
+
+autoUpdater.on('checking-for-update', () => log.info('Checking for updates...'));
+autoUpdater.on('update-available', (info) => log.info('Update available:', info.version));
+autoUpdater.on('update-not-available', (info) => log.info('No update available:', info.version));
+autoUpdater.on('error', (err) => log.error('Error in auto-updater:', err));
+autoUpdater.on('download-progress', (progress) => log.info(`Download speed: ${progress.bytesPerSecond}, Progress: ${progress.percent}%`));
+
+// ########################## this auto installs it without asking the user to confirm ######
+autoUpdater.on('update-downloaded', (info) => {
+  log.info('Update downloaded:', info.version);
+  // autoUpdater.quitAndInstall();// auto updates without asking 
+});
+
+
+
+
+
+// ##########################  the main update code you want ###############
+autoUpdater.on('update-available', (info) => {
+  console.log('[Updater] Update available:', info.version);
+  dialog.showMessageBox({
+    type: 'info',
+    title: 'Update Available',
+    message: 'A new update is available. Downloading now...'
+  });
+});
+
+autoUpdater.on('update-downloaded', (info) => {
+  console.log('[Updater] Update downloaded:', info.version);
+  dialog.showMessageBox({
+    type: 'info',
+    title: 'Update Ready',
+    message: 'Install & restart now?',
+    buttons: ['Yes', 'Later']
+  }).then(result => {
+    if (result.response === 0) {
+      autoUpdater.quitAndInstall(); 
+    }
+  });
+});
+
+
 
 function createWindow() {
   // Create the browser window.
@@ -34,7 +83,12 @@ function createWindow() {
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
+
+  mainWindow.webContents.openDevTools();
+
+  console.log('[Updater] Calling checkForUpdatesAndNotify...');
   autoUpdater.checkForUpdatesAndNotify();
+  console.log('[Updater] checkForUpdatesAndNotify called.');
 }
 
 // This method will be called when Electron has finished
@@ -75,23 +129,3 @@ app.on('window-all-closed', () => {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 
-autoUpdater.on('update-available', () => {
-  dialog.showMessageBox({
-    type: 'info',
-    title: 'Update Available',
-    message: 'A new update is available. Downloading now...'
-  });
-});
-
-autoUpdater.on('update-downloaded', () => {
-  dialog.showMessageBox({
-    type: 'info',
-    title: 'Update Ready',
-    message: 'Install & restart now?',
-    buttons: ['Yes', 'Later']
-  }).then(result => {
-    if (result.response === 0) {
-      autoUpdater.quitAndInstall();
-    }
-  });
-});

@@ -1,34 +1,37 @@
-# evupdatetest
+### notes:
 
-An Electron application with React
+# in package.json this is required:
 
-## Recommended IDE Setup
+Format:
+ ```
+   "build": {
+    "productName": "helloworld",
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "jpobzy",
+        "repo": "EVupdateTest"
+      }
+    ],
+    "files": [
+      "out/**/*"
+    ],
+    "nsis": { 
+      "artifactName": "${productName}-${version}.${ext}"
+    }
+  },
+  ```
 
-- [VSCode](https://code.visualstudio.com/) + [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) + [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+- `"productName": "helloworld",` - helloworld will be the start of the url line in latest.yaml
+- the nsis line will remove "-startup-" from the url line
 
-## Project Setup
 
-### Install
 
-```bash
-$ npm install
-```
+### upload instructions
+- to update you need to run npm run build:win
+- go to the github repo and create a new release
+- attach the latest.yaml and exe (NOT .blockmap) files
 
-### Development
-
-```bash
-$ npm run dev
-```
-
-### Build
-
-```bash
-# For windows
-$ npm run build:win
-
-# For macOS
-$ npm run build:mac
-
-# For Linux
-$ npm run build:linux
-```
+### other
+- check src/main/index.js for the main code to update it
+- in production and console.log commands will not run, its best if you log it. if using `npm install electron-log` log file will be found in `AppData\Roaming\appname`
